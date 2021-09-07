@@ -57,17 +57,18 @@ arithmeticFcn getArithmeticFch(char ch) {
     }  
 }
 
-List *push (List *stack, int sum) {
-    List *x = stack;
+List *push (List *x, int sum) {
+    x->next = new List;
+    x = x->next;
     x->value = sum;
     x->next = nullptr;
-    x = x->next;
-    x->next = new List;
+    
+    
     return x;
 }
 
 int pop (List *stack) {
-    while (stack != 0) {
+    while (stack->next != 0) {
         stack = stack->next;
     }
     return stack->value;
@@ -78,10 +79,14 @@ int main () {
     int sum = a;
     char ex = '0';
     List *stack = nullptr;
+    stack = new List; // без этого не работало.
+    stack->value = sum;
+    stack->next = nullptr;
+    List *x = stack;
     do {
         char ch = getOperation();
         int b = getNum();
-        stack = push(stack, sum);
+        x = push(x, sum);
         arithmeticFcn fcn = getArithmeticFch(ch);
         sum = fcn(sum, b);
         cout << "answer " << sum << endl << "For exit press 'q', undo press 'u', to continue press any key " << endl;

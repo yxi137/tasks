@@ -2,6 +2,7 @@
 #include<algorithm>
 
 using namespace std;
+
 struct List {
     int value;
     List *next;
@@ -57,21 +58,21 @@ arithmeticFcn getArithmeticFch(char ch) {
     }  
 }
 
-List *push (List *x, int sum) {
-    x->next = new List;
-    x = x->next;
-    x->value = sum;
-    x->next = nullptr;
-    
-    
-    return x;
+List *push (List *stack, int sum) {
+    List *newHead = nullptr;
+    newHead = new List;
+    newHead->next = stack;
+    newHead->value = sum;
+    return newHead;
 }
 
 int pop (List *stack) {
-    while (stack->next != 0) {
-        stack = stack->next;
+    if (stack->next == nullptr) {
+        return 0;
     }
-    return stack->value;
+    int sum = stack->value;
+    delete stack;
+    return sum;
 }
 
 int main () {
@@ -79,22 +80,28 @@ int main () {
     int sum = a;
     char ex = '0';
     List *stack = nullptr;
-    stack = new List; // без этого не работало.
-    stack->value = sum;
+    stack = new List;
     stack->next = nullptr;
-    List *x = stack;
+    List *x = nullptr;
+    x = new List;
+    x->next = nullptr;
     do {
         char ch = getOperation();
         int b = getNum();
-        x = push(x, sum);
+        stack = push(stack, sum);
         arithmeticFcn fcn = getArithmeticFch(ch);
         sum = fcn(sum, b);
         cout << "answer " << sum << endl << "For exit press 'q', undo press 'u', to continue press any key " << endl;
         cin >> ex;
 
         if (ex == 'u') {
-            sum = pop(stack);
-            cout << sum << endl;
+            while (ex == 'u') {
+                x = stack->next;
+                sum = pop(stack);
+                stack = x;
+                cout << "answer " << sum << endl << "For exit press 'q', undo press 'u', to continue press any key " << endl;
+                cin >> ex;
+            }
         }
     }
 

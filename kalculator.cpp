@@ -80,7 +80,7 @@ int main () {
     int sum = a;
     char ex = '0';
     List *stack = nullptr;
-    stack = new List;
+    stack = new List; //yt
     stack->next = nullptr;
     List *x = nullptr;
     x = new List;
